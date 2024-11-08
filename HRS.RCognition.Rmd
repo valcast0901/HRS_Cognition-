@@ -1,0 +1,59 @@
+---
+title: "HRS"
+author: "by Valeria Castañeda Saucedo"
+date: "2024-11-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(readr)
+tableExport <- read_csv("tableExport.csv")
+tableExport
+
+```
+```{r}
+str(tableExport)
+summary(tableExport)
+head(tableExport)
+```
+```{r}
+missing_values <- sum(is.na(tableExport))
+data_clean <- na.omit(tableExport)
+
+data_clean
+```
+```{r}
+data_clean1 <- data_clean[!duplicated(data_clean), ]
+data_clean1
+```
+
+```{r}
+write.csv(data_clean1, "2020cognition_cleaneddata.csv", row.names = FALSE)
+```
+
+```{r}
+data_clean2 <- data_clean1[-c(14, 15, 16, 17, 18, 19, 20, 21), ]
+data_clean2
+write.csv(data_clean2, "2020cognition_cleaneddata_withoutrows.csv", row.names = FALSE)
+```
+
+```{r}
+library(haven)
+library(data.table)
+large_data <- read.table("~/Desktop/U of M 24-26/HRS Data /trk2022v1/trk2022TR_R.txt", header = TRUE, sep = "\t")
+
+write.csv(large_data, "~/Desktop/U of M 24-26/HRS Data /trk2022v1/trk2022TR_R.csv", row.name = FALSE)
+
+data_csv <- read.csv("~/Desktop/U of M 24-26/HRS Data /trk2022v1/trk2022TR_R.csv")
+
+
+merge_data <- merge(data_csv, data_clean2, by = "variable")
+
+colnames (data_csv)
+colnames (data_clean2)
+```
+
+
+
+
+
